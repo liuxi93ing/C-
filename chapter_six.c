@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -337,16 +337,88 @@ int main()
 }
 */
 
-// 9. 有15个数按由大到小顺序存放在一个数组中，输入一个数，要求用折半查找法找出该数是数组中第几个元素的值。如果该数部在数组中，则输出“无此数”。
+// 9. 有15个数按由大到小顺序存放在一个数组中，输入一个数，要求用折半查找法找出该数是数组中第几个元素的值。如果该数不在数组中，则输出“无此数”。
+
+/*
+int main()
+{
+    int a[15] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    int i, x;
+    int left, right,middle;
+    int flag = 0;
+
+    printf("该数组为:");
+    for(i=0;i<15;i++)
+        printf("%-3d",a[i]);
+
+    printf("\n请输入一个数：");
+    scanf("%d",&x);
+
+    left = 0;
+    right = 14;
+    while(x>=a[left]&&x<a[right])
+    {
+        middle = (left+right)/2;        //由于int类型向0取整，取不到整个数组中最大的那个数，单独判断
+
+        if(a[middle]==x)
+        {flag = 1; break;}
+        else if(a[middle]>x)
+            right = middle;
+        else if(a[middle]<x)
+            left = middle;
+    }
+
+    if(flag==1)
+        printf("%d是该数组中的第%d个元素\n",x,middle+1);
+    else if(x==a[14])
+        printf("%d是该数组中的第15个元素\n",x);
+    else
+        printf("无此数\n");
+
+    return 0;
+
+}
+*/
 
 // 10. 有一篇文章，共有三行字，每行80个字符。要求分别统计出其中英文大写字母，小写字母，数字，空格以及其他字符的个数。
+/*
+int main()
+{
+    char a[] = {"Glass cannons are Pokemons that offset their relative frailty with high attack-\ning power.In the turn-based main series, Pokemon with high Special and Physical\nAttack, in conjunction with a high Speed, could be used to “sweep” opponents.\n"};
+    int i, length;
+    int upper_case = 0, lower_case = 0, number = 0, space = 0, other = 0;
 
+    length = strlen(a);
+
+    printf("原文如下:\n");
+    for(i=0;i<length;i++)
+    {
+        putchar(a[i]);
+        if(a[i]==' ')
+            space++;
+        else if(a[i]>='a'&&a[i]<='z')
+            lower_case++;
+        else if(a[i]>='A'&&a[i]<='Z')
+            upper_case++;
+        else if(a[i]>='0'&&a[i]<='9')
+            number++;
+        else
+            other++;
+    }
+
+    printf("\n大写字母有%d个，小写字母有%d个，数字有%d个，空格有%d个，其他符号有%d个\n",upper_case,lower_case,number,space,other);
+
+    return 0;
+
+}
+*/
 // 11. 输出以下图案：
 /**                     * * * * *
                           * * * * *
                             * * * * *
                               * * * * *
 */
+
 
 // 12. 有一行电文，已按下面规律已成密码：A->Z, a->z, B->Y, b->y.....。即第1个字母变成第26个字母，第i个字母变成第（26-i+1）个字母。非字母字符不变。要求编程将密码一会原文，并输出密码和原文。
 
