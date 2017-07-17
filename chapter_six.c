@@ -1,4 +1,4 @@
- #include <stdio.h>
+#include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -418,7 +418,24 @@ int main()
                             * * * * *
                               * * * * *
 */
+/*
+int main()
+{
+    char s[] = {"* * * * *"};
 
+    int i,j;
+    for(i=0;i<4;i++)
+    {
+        putchar('\t');
+        for(j=0;j<2*i;j++)
+            putchar(' ');
+        puts(s);
+
+    }
+
+    return 0;
+}
+*/
 
 // 12. 有一行电文，已按下面规律已成密码：A->Z, a->z, B->Y, b->y.....。即第1个字母变成第26个字母，第i个字母变成第（26-i+1）个字母。非字母字符不变。要求编程将密码一会原文，并输出密码和原文。
 
