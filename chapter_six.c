@@ -437,12 +437,123 @@ int main()
 }
 */
 
-// 12. 有一行电文，已按下面规律已成密码：A->Z, a->z, B->Y, b->y.....。即第1个字母变成第26个字母，第i个字母变成第（26-i+1）个字母。非字母字符不变。要求编程将密码一会原文，并输出密码和原文。
+// 12. 有一行电文，已按下面规律已成密码：A->Z, a->z, B->Y, b->y.....。即第1个字母变成第26个字母，第i个字母变成第（26-i+1）个字母。非字母字符不变。要求编程将密码译回原文，并输出密码和原文。
+/*
+int main()
+{
+    char ciperText[] = {"abcdefghijklmnopqrstuvwxyz,ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
+    int length = strlen(ciperText);
+    int i;
+
+    printf("密文为：\n");
+    puts(ciperText);
+
+    printf("原文为：\n");
+    for(i=0;i<length;i++)
+    {
+        if(ciperText[i]>=65&&ciperText[i]<=90)
+            printf("%c",90-(ciperText[i]-65));
+        else if(ciperText[i]>=97&&ciperText[i]<=122)
+            printf("%c",122-(ciperText[i]-97));
+        else
+            printf("%c",ciperText[i]);
+    }
+    printf("\n");
+
+    return 0;
+
+}
+
+*/
 
 // 13. 编一个程序，将两个字符串连接起来，不要用strcat函数。
+/*
+int main()
+{
+    char* concatenate(char A[], char B[])
+    {
+        int len_A = strlen(A);
+        int len_B = strlen(B);
+        int i;
 
-// 14. 编一个程序，将两个字符出s1和s2比较，如果s1>s2,输出一个正数；若s1=s2,输出0；若s1<s2,输出一个负数。不要用strcpy函数。两个字符串用gets函数读入。
+        for(i = 0; i<len_B; i++)
+            A[len_A+i] = B[i];
+
+        return A;
+    }
+
+    char str1[1000];
+    char str2[200];
+    printf("请输入第一个字符串：\n");
+    gets(str1);
+    printf("请输入第二个字符串：\n");
+    gets(str2);
+    printf("连接后结果为：\n%s\n",concatenate(str1,str2));
+
+    return 0;
+}
+
+*/
+
+// 14. 编一个程序，将两个字符出s1和s2比较，如果s1>s2,输出一个正数；若s1=s2,输出0；若s1<s2,输出一个负数。不要用strcmp函数。两个字符串用gets函数读入。
 //     输出正数或负数的绝对值应是比较两个字符串相应字符ASCII码的差值。例如，“A”与“C”相比，由于“A”<“C”，应输出负数，即-2。“And”和“Aid”比较，根据第2个字符比较结果，“n”比“i”大5，应输出“5”。
+//     （本题实现strcmp函数，即只比较到第一个相异的字符，而不是比较所有字符计算总差值）
+/*
+int main()
+{
+    int compare(char A[], char B[])
+    {
+
+        int i = 0, diff = 0;
+        while(diff==0)
+        {
+            diff = A[i]-B[i];
+            i++;
+            if(A[i]=='\0'||B[i]=='\0')
+                break;
+        }
+        return diff;
+    }
+
+    char str1[200];
+    char str2[200];
+    printf("请输入第一个字符串：\n");
+    gets(str1);
+    printf("请输入第二个字符串：\n");
+    gets(str2);
+    printf("比较后结果为：\n%d\n",compare(str1,str2));
+
+    return 0;
+}
+*/
 
 // 15. 编写一个程序，将字符数组s2中的全部字符复制到字符数组s1中。不用strcpy函数。复制时，'\0'也要复制过去。‘\0’后面的字符不复制。
+
+/*
+int main()
+{
+    int copy(char A[], char B[])
+    {
+
+        int i = 0, len_B = strlen(B);
+        while(B[i]!='\0')
+        {
+            A[i] = B[i++];
+        }
+        A[i] = B[i];
+
+        return A;
+    }
+
+    char str1[200];
+    char str2[200];
+    printf("请输入第一个字符串：\n");
+    gets(str1);
+    printf("请输入第二个字符串：\n");
+    gets(str2);
+    printf("复制后结果为：\n%s\n",copy(str1,str2));
+
+    return 0;
+}
+*/
