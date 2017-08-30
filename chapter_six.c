@@ -469,20 +469,20 @@ int main()
 
 // 13. 编一个程序，将两个字符串连接起来，不要用strcat函数。
 /*
+
+char* concatenate(char A[], char B[])
+{
+    int len_A = strlen(A);
+    int len_B = strlen(B);
+    int i;
+    for(i = 0; i<len_B; i++)
+        A[len_A+i] = B[i];
+
+    return A;
+}
+
 int main()
 {
-    char* concatenate(char A[], char B[])
-    {
-        int len_A = strlen(A);
-        int len_B = strlen(B);
-        int i;
-
-        for(i = 0; i<len_B; i++)
-            A[len_A+i] = B[i];
-
-        return A;
-    }
-
     char str1[1000];
     char str2[200];
     printf("请输入第一个字符串：\n");
@@ -500,23 +500,24 @@ int main()
 //     输出正数或负数的绝对值应是比较两个字符串相应字符ASCII码的差值。例如，“A”与“C”相比，由于“A”<“C”，应输出负数，即-2。“And”和“Aid”比较，根据第2个字符比较结果，“n”比“i”大5，应输出“5”。
 //     （本题实现strcmp函数，即只比较到第一个相异的字符，而不是比较所有字符计算总差值）
 /*
+
+int compare(char A[], char B[])
+{
+
+    int i = 0, diff = 0;
+    while(diff==0)
+    {
+        diff = A[i]-B[i];
+        i++;
+        if(A[i]=='\0'||B[i]=='\0')
+            break;
+    }
+    return diff;
+}
+
 int main()
 {
-    int compare(char A[], char B[])
-    {
-
-        int i = 0, diff = 0;
-        while(diff==0)
-        {
-            diff = A[i]-B[i];
-            i++;
-            if(A[i]=='\0'||B[i]=='\0')
-                break;
-        }
-        return diff;
-    }
-
-    char str1[200];
+        char str1[200];
     char str2[200];
     printf("请输入第一个字符串：\n");
     gets(str1);
@@ -531,21 +532,20 @@ int main()
 // 15. 编写一个程序，将字符数组s2中的全部字符复制到字符数组s1中。不用strcpy函数。复制时，'\0'也要复制过去。‘\0’后面的字符不复制。
 
 /*
+char* copy(char A[], char B[])
+{
+
+    int i = 0;
+    while(B[i]!='\0')
+    {
+        A[i] = B[i++];
+    }
+    A[i] = B[i];
+    return A;
+}
+
 int main()
 {
-    int copy(char A[], char B[])
-    {
-
-        int i = 0, len_B = strlen(B);
-        while(B[i]!='\0')
-        {
-            A[i] = B[i++];
-        }
-        A[i] = B[i];
-
-        return A;
-    }
-
     char str1[200];
     char str2[200];
     printf("请输入第一个字符串：\n");
@@ -556,4 +556,5 @@ int main()
 
     return 0;
 }
+
 */
