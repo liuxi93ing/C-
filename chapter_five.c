@@ -261,7 +261,7 @@ int main()
     while(1)
     {
         x = x - func1(x)/func2(x);
-        if(func1(x)== 0)
+        if(fabs(func1(x))< 0.000001)                //以浮点数大小作为判定条件时，不要是用==0， 判断绝对值是否小于趋近0的数
             break;
     }
     printf("该方程在1.5附近的根为%lf\n",x);
