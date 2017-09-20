@@ -4,7 +4,7 @@
 ***********************
 Very Good！
 ***********************
-
+*/
 #include<stdio.h>
 
 int main()
@@ -15,10 +15,10 @@ int main()
     return 0;
 }
 
-*/
+
 // 6. 编写一个C程序，输入a，b，c 三个值，输出其中最大者。
 
-/*
+
 #include<stdio.h>
 
 int main()
@@ -33,4 +33,4 @@ int main()
     printf("the biggest one is: %d",(a>b?a:b)>c?(a>b?a:b):c );
 }
 
-*/
+
