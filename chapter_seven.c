@@ -4,43 +4,6 @@
 #include <string.h>
 
 // 1. 写两个函数，分别求两个整数的最大公约数和最小公倍数数，用主函数调用这两个函数，并输出结果。两个整数由键盘输入。
-/*
-int Greateat_common_factor(int num_1, int num_2)
-{
-    int i = 0;
-    int min = num_1<num_2?num_1:num_2;
-    int result = 1;
-    for(i = 1; i<=min; i++)
-    {
-        if(num_1%i==0 && num_2%i==0)
-            result = i;
-    }
-    return result;
-}
-
-int Least_common_multiple(int num_1, int num_2)
-{
-    int i = 0;
-    int max = num_1*num_2;
-    int result = max;
-    for(i = max; i>=num_1; i--)
-    {
-        if(i%num_1==0 && i%num_2==0)
-            result = i;
-    }
-    return result;
-}
-
-int main()
-{
-    int num_1,num_2;
-    printf("输入两个整数:");
-    scanf("%d%d",&num_1,&num_2);
-    printf("最大公约数是:%d，最小公倍数是:%d\n",Greateat_common_factor(num_1,num_2),Least_common_multiple(num_1,num_2));
-    return 0;
-}
-*/
-
 
 int greatest_common_factor(int num_1, int num_2)
 {
@@ -458,8 +421,8 @@ int main()
 }
 
 
-// 14. 输入10个学生5门课的成绩，分别用函数实现下列功能：
-/**    1) 计算每个学生的平均分；
+/** 14. 输入10个学生5门课的成绩，分别用函数实现下列功能：
+       1) 计算每个学生的平均分；
        2) 计算每门课的平均分；
        3) 找出所有50个分数中最高的分数所对应的学生和课程；
        4) 计算平均分方差。
@@ -575,12 +538,12 @@ int main()
 
 }
 
-// 15. 写几个函数：
-/**    1) 输入10个职工的姓名和职工号；
+/** 15. 写几个函数：
+       1) 输入10个职工的姓名和职工号；
        2) 按职工号有小到大顺序排序，姓名顺序也随之调整；
        3) 要求输入一个职工号，用折半查找法找出该职工的姓名，从主函数输入要查找的职工号，输出该职工姓名。
 */
-/*鉴于未学习结构体，暂跳过此题*/
+/*鉴于未学习结构体知识，暂跳过此题*/
 // 16. 写一个函数，输入一个十六位进制数，输出相应的十进制数。
 
 long long int hex_to_dec(char hex[], int count)

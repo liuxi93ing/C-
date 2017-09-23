@@ -81,13 +81,127 @@ int main()
 }
 
 
-// 3. 输入10个整数，将其中最小的数与第一个数对换，把最大的数与最后一个数对换。写3个函数：（1）输入10个函数；（2）进行处理；（3）输出10个数。
+// 3. 输入10个整数，将其中最小的数与第一个数对换，把最大的数与最后一个数对换。写3个函数：（1）输入10个整数；（2）进行处理；（3）输出10个数。
 
-// 4. 有n个整数，是前面各数顺序向后移m个位置，最后m个数变成最前面m个数，见图8.43。写一个函数实现以上功能，在主函数输入n个整数和输出调整后的n个数。
+void input_integers(int *p, int count)
+{
+    printf("输入10个整数，以空格分隔：");
+    while(count--)
+        scanf("%d",p++);
+}
+
+void output_integers(int *p, int count)
+{
+    printf("十个整数分别为：");
+    while(count--)
+        printf("%d ",*p++);
+}
+
+void process_integers(int *p, int count)
+{
+    int *head, *tail, *max, *min, temp;
+    head = p;
+    tail = p+count-1;
+    max = min = p;
+    while(count--)
+    {
+        if(*p>*max)
+            max = p;
+        if(*p<*min)
+            min = p;
+        p++;
+    }
+
+    temp = *head;
+    *head = *min;
+    *min = *head;
+
+    temp = *tail;
+    *tail = *max;
+    *max = temp;
+}
+
+int main()
+{
+    int array[10];
+    input_integers(array,10);
+    process_integers(array,10);
+    output_integers(array,10);
+    return 0;
+}
+// 4. 有n个整数，使前面各数顺序向后移m个位置，最后m个数变成最前面m个数，见图8.43。写一个函数实现以上功能，在主函数输入n个整数和输出调整后的n个数。
+
 
 // 5. 有n个人围成一圈，顺序排号。从第一个人开始报数（从1到3报数），凡报到3的人退出圈子，问最后留下的是原来几号的那位。
 
+int functin(int *p, int number)
+{
+    int *head = p, *tail = p + number - 1; // 如有10个人参加，tail指向第10个人，head指向第1个，他们之间差值为10-1
+    int *temp = head, i = 1, count = number;
+    while(1)            // 每次循环表示一个人报一个数，记录下来；已经报过3的跳过；p指向当前报数的人，i表示当前的数；
+    {                   // 结尾报完后回到从头接着报; 每有一个人报了三之后，总人数减一，剩一人时跳出循环。找出剩下的没报3的那个
+        if(*p == 3)     // p-head表示他们之前隔了几个人，head指向第一个人，p-head为2，p指向3个人，所以返回p-head+1
+        {
+            p++;
+            continue;   //!!!一次循环中指针p只能变动一次，要么正常报，要么跳过3，要么尾到头!!!
+        }
+
+        if(p-1==tail)
+        {
+            p = head;
+            continue;   //!!如果一次循环向后推移多个会出错!!
+        }
+
+        if(i>=1&&i<=3)
+        {
+            if(i==3)
+                count--;
+             *p++ = i++;
+        }
+        if(i==4)
+            i = 1;
+
+        if(count==1)
+            break;
+    }
+    for(p = head; p <= tail; p++)
+    {
+        if(*p!=3)
+            break;
+    }
+
+    return p-head+1;
+}
+
+int main()
+{
+    int array[1000] = {0};
+    int n;
+    printf("输入人数n(小于1000)：");
+    scanf("%d",&n);
+    printf("剩下的人是最初的%d号\n",functin(array,n));
+    return 0;
+}
+
 // 6. 写一个函数，求一个字符串的长度。在main函数中输入字符串，并输出其长度。
+int string_len(char *s)
+{
+    int length = 0;
+    while(*s++!='\0')
+        length++;
+    return length;
+}
+
+int main()
+{
+    char *p = (char*)malloc(sizeof(char)*100);
+    memset(p,0,sizeof(char)*100);
+    printf("输入一个字符串：");
+    scanf("%s",p);
+    printf("字符串长度为：%d",string_len(p));
+    free(p);
+    return 0;
+}
 
 // 7. 有一个字符串，包含n个字符。写一个函数，将此字符串中从第m个字符开始的全部字符复制成另一个字符串。
 
