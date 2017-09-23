@@ -4,8 +4,48 @@
 #include <string.h>
 
 // 1. 写两个函数，分别求两个整数的最大公约数和最小公倍数数，用主函数调用这两个函数，并输出结果。两个整数由键盘输入。
+/*
+int Greateat_common_factor(int num_1, int num_2)
+{
+    int i = 0;
+    int min = num_1<num_2?num_1:num_2;
+    int result = 1;
+    for(i = 1; i<=min; i++)
+    {
+        if(num_1%i==0 && num_2%i==0)
+            result = i;
+    }
+    return result;
+}
+
+int Least_common_multiple(int num_1, int num_2)
+{
+    int i = 0;
+    int max = num_1*num_2;
+    int result = max;
+    for(i = max; i>=num_1; i--)
+    {
+        if(i%num_1==0 && i%num_2==0)
+            result = i;
+    }
+    return result;
+}
+
+int main()
+{
+    int num_1,num_2;
+    printf("输入两个整数:");
+    scanf("%d%d",&num_1,&num_2);
+    printf("最大公约数是:%d，最小公倍数是:%d\n",Greateat_common_factor(num_1,num_2),Least_common_multiple(num_1,num_2));
+    return 0;
+}
+*/
+
 
 // 2. 求方程ax^2+bx+c=0的根，用三个函数分别求当：b^2-4ac大于0、等于0和小于0时的跟并输出结果。从主函数中输入a,b,c的值。
+
+
+
 
 // 3. 写一个判断素数的函数，在主函数输入一个整数，输出是否为素数的信息。
 
