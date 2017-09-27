@@ -131,6 +131,60 @@ int main()
 }
 // 4. 有n个整数，使前面各数顺序向后移m个位置，最后m个数变成最前面m个数，见图8.43。写一个函数实现以上功能，在主函数输入n个整数和输出调整后的n个数。
 
+int * transposition(int *p, int n, int m)
+{
+    int *temp = (int*)malloc(sizeof(int)*1000);     // 开辟临时空间
+    memset(temp,0,sizeof(int)*1000);
+    int i = 0;
+
+    int *cursor = p + n - m;                        // 把后段m个数拷贝到临时空间
+    for(;i<m; i++)
+        temp[i] = cursor[i];
+
+    cursor = p + n - m -1;                          //把前段n-m个数像后挪m,从本段最后一个数开始一个一个挪
+    for(i = 0; i< n-m; i++)
+    {
+         cursor[m] = cursor[0];
+         cursor--;
+    }
+
+    cursor = p;                                     //再把临时空间中的m个数拷贝回来
+    for(i = 0;i < m; i++)
+        cursor[i] = temp[i];
+
+    free(temp);
+    return p;
+}
+
+int main()
+{
+    int array[1000], i, *p;
+    p = array;
+    srand((int)time(0));
+    for(i =0; i<1000; i++)
+        array[i] = rand()%100;
+
+    int m, n;
+    printf("输入n和m(n<1000,m<1000,m<n):");
+    scanf("%d%d",&n,&m);
+
+    printf("\n调整前数列为:\n");
+    i = n;
+    while(i--)
+        printf("%d ", *p++);
+
+    transposition(array, n, m);
+
+    printf("\n调整后数列为:\n");
+    i = n;
+    p = array;
+    while(i--)
+        printf("%d ", *p++);
+
+    return 0;
+}
+
+
 
 // 5. 有n个人围成一圈，顺序排号。从第一个人开始报数（从1到3报数），凡报到3的人退出圈子，问最后留下的是原来几号的那位。
 
@@ -204,6 +258,32 @@ int main()
 }
 
 // 7. 有一个字符串，包含n个字符。写一个函数，将此字符串中从第m个字符开始的全部字符复制成另一个字符串。
+
+char *cut(char *str, int m)
+{
+    char *s_new = (char *)malloc(sizeof(char)*1000);        //堆里开辟的字符数组，函数调用结束后不会被回收，整个程序结束后被回收
+    memset(s_new,0,sizeof(char)*1000);
+
+    char *cursor_old = str + m - 1;
+    char *cursor_new = s_new;
+    while(*cursor_old!='\0')
+        *cursor_new++=*cursor_old++;
+    return s_new;
+}
+int main()
+{
+    char *s = (char *)malloc(sizeof(char)*1000);
+    memset(s,0,sizeof(char)*1000);
+    int m;
+
+    printf("输入一个字符串(length<1000)：\n");
+    gets(s);
+    printf("输入m(m<1000)：");
+    scanf("%d",&m);
+    printf("新字符串为:\n");
+    puts(cut(s,m));
+    return 0;
+}
 
 // 8. 输入一行文字，找出其中大写字母，小写字母，空格，数字以及其他字符各有多少。
 
