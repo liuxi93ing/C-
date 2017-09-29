@@ -287,7 +287,72 @@ int main()
 
 // 8. 输入一行文字，找出其中大写字母，小写字母，空格，数字以及其他字符各有多少。
 
+int main()
+{
+    char *s = (char*)malloc(sizeof(char)*1000);
+    memset(s,0,sizeof(char)*1000);
+    char *cursor = s;
+    int upper = 0, lower = 0, space = 0, number = 0, others = 0;
+
+    printf("请输入字符串：\n");
+    gets(s);
+    while(*cursor!='\0')
+    {
+        if(*cursor>='A'&&*cursor<='Z')
+            upper++;
+        else if(*cursor>='a'&&*cursor<='z')
+            lower++;
+        else if(*cursor>='0'&&*cursor<='9')
+            number++;
+        else if(*cursor==' ')
+            space++;
+        else
+            others++;
+
+        cursor++;
+    }
+    printf("大写字母%d个，小写字母%d个，空格%d个，数字%d个，其他字符%d个。\n",upper,lower,space,number,others);
+    free(s);
+    return 0;
+}
+
 // 9. 写一个函数，将一个3乘3的矩阵转置。
+
+void transpose_array(int *s, int n)
+{
+    int i, j, temp;
+    for(i = 0; i < n; i++)
+        for(j = i; j< n; j++)
+        {
+             temp = *(s+i*n+j);             // s[i][j] 用指针表示为 *（s+n*i+j) n为第二维的长度
+             *(s+i*n+j) = *(s+j*n+i);
+             *(s+j*n+i)=temp;
+        }
+}
+
+int main()
+{
+    int arr[3][3];
+    int *p = *arr, i =0;
+    srand((int)time(0));
+
+    printf("原矩阵为:\n");
+    for(i=0;i<9;i++)
+    {
+        printf("%-4d", *(p+i)=rand()%99+1);
+        if(i==2||i==5||i==8)
+            printf("\n");
+    }
+    transpose_array(arr,3);
+    printf("转置后的矩阵为:\n");
+    for(i=0;i<9;i++)
+    {
+        printf("%-4d", *(p+i));
+        if(i==2||i==5||i==8)
+            printf("\n");
+    }
+    return 0;
+}
 
 // 10. 将一个5乘5的矩阵中最大的元素放在中心，4个角分别放4个最小的元素（顺序为从左到右，从上到下依次从大到小存放），写一个函数实现之。用main函数调用。
 
