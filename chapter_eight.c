@@ -321,7 +321,7 @@ int main()
 void transpose_array(int *s, int n)
 {
     int i, j, temp;
-    for(i = 0; i < n; i++)
+    for(i = 0; i < n; i++)                  // 遍历一半的矩阵，将s[i][j]与s[j][i]交换
         for(j = i; j< n; j++)
         {
              temp = *(s+i*n+j);             // s[i][j] 用指针表示为 *（s+n*i+j) n为第二维的长度
@@ -355,6 +355,115 @@ int main()
 }
 
 // 10. 将一个5乘5的矩阵中最大的元素放在中心，4个角分别放4个最小的元素（顺序为从左到右，从上到下依次从大到小存放），写一个函数实现之。用main函数调用。
+
+void swap_num(int *a, int m, int n)
+{
+    int temp;
+    temp = *(a+n);
+    *(a+n) = *(a+m);
+    *(a+m) = temp;
+}
+
+void print_array(int *a, int x)
+{
+    int i;
+    for(i = 0;i < x*x; i++)
+    {
+        printf("%-3d",*(a+i));
+        if((i+1)%x==0)
+            printf("\n");
+    }
+}
+
+void generate_array(int *a, int x)
+{
+    srand((int)time(0));
+    int i;
+    for(i = 0; i< x*x; i++)
+        *(a+i) = rand()%99;
+}
+
+void trans_array(int *a, int x)                             // 不能先把最大数和四个最小数先取到，再一起交换，会出现重复交换情况。应该每次去一个就换一个
+{                                                           // 取最小数时要跳过前面已取到的更小的数。
+    int max = *a, min1 , min2 , min3 , min4;
+    int max_index = 0, min1_index, min2_index , min3_index , min4_index;
+    int i;
+    for(i = 0; i < x*x; i++)
+    {
+        if(*(a+i)>max)
+        {
+            max = *(a+i);
+            max_index = i;
+        }
+    }
+    swap_num(a, max_index, 12);
+
+    min1 = max;
+    min1_index = 12;
+    for(i = 0; i < x*x; i++)
+    {
+        if(*(a+i)<min1)
+        {
+            min1 = *(a+i);
+            min1_index = i;
+        }
+    }
+    swap_num(a, min1_index, 24);
+
+    min2 = max;
+    min2_index = 12;
+    for(i = 0; i < x*x; i++)
+    {
+        if(i == 24)
+            continue;
+        if(*(a+i)<min2)
+        {
+            min2 = *(a+i);
+            min2_index = i;
+        }
+    }
+    swap_num(a, min2_index, 20);
+
+    min3 = max;
+    min3_index = 12;
+    for(i = 0; i < x*x; i++)
+    {
+        if(i == 24||i == 20)
+            continue;
+        if(*(a+i)<min3)
+        {
+            min3 = *(a+i);
+            min3_index = i;
+        }
+    }
+    swap_num(a, min3_index, 4);
+
+    min4 = max;
+    min4_index = 12;
+    for(i = 0; i < x*x; i++)
+    {
+        if(i == 24||i == 20||i == 4)
+            continue;
+        if(*(a+i)<min4)
+        {
+            min4 = *(a+i);
+            min4_index = i;
+        }
+    }
+    swap_num(a, min4_index, 0);
+}
+
+int main()
+{
+    int a[5][5];
+    generate_array(a, 5);
+    printf("原数组为：\n");
+    print_array(a, 5);
+    trans_array(a, 5);
+    printf("\n转变后原数组为：\n");
+    print_array(a, 5);
+    return 0;
+}
 
 // 11. 在主函数中输入10个等长的字符串。用另一个函数对他们排序。然后在主函数输出这10个排好的字符串。
 
