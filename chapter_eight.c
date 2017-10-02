@@ -2,6 +2,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 //本章习题要求用指针方法处理
 // 1. 输入3个整数，按由小到大的顺序输出。
@@ -466,6 +467,69 @@ int main()
 }
 
 // 11. 在主函数中输入10个等长的字符串。用另一个函数对他们排序。然后在主函数输出这10个排好的字符串。
+
+void generate_str(char *str, int row, int col)      // 随机生成等长字符串, 范围是48-122 ， ‘0’到‘z’，包含特殊符号
+{
+    int i, j;
+    srand((int)time(0));
+    for(i = 0; i<row; i++)
+    {
+        for(j = 0; j<col-1; j++)
+            *(str+i*col+j)=rand()%74+48;
+        *(str+i*col+col-1) = '\0';
+    }
+}
+
+void print_str_1(char (*str)[20], int row)            // 参数char (*str)[20] 也可以 写成 char str[][20], 两者等同，但列数20不能省
+{                                                     // 此时str是指向一维数组的指针，
+    int i;
+    for(i = 0; i<row; i++)
+        puts(str+i);                                  // str加1就代表指向下一个字符串
+}
+
+void print_str_2(char *str, int row, int col)
+{
+    int i;
+    for(i = 0; i<row; i++)                             // 此时str指向单个字符，想指向下一个字符串就得加 i乘列数。
+        puts(str+i*col);
+}                                                      // 两个函数中str类型不同，但值相同，用puts输出都会输出第一个字符串
+
+
+void sort_str(char *str_1, char *str_2, int row, int col)
+{
+        int i, j;
+        char *min_str, *temp_min = str_2;
+
+        j = row;
+        while(j--)                                      // 双重循环，内层循环每次取出str_1中当前最小的字符串，外层把取到的最小字符串写入str_2中
+        {
+            min_str = "zzzzzzzzzzzzzzzz";
+            for(i = 0; i<row; i++)
+                if(strcmp(str_1+i*col,min_str)<0&&strcmp(temp_min,str_1+i*col)<0)       // 还保证当前次取到的最小字符串比已经写入到str_2中的都要大
+                    min_str = str_1+i*col;
+
+            strcpy(str_2, min_str);
+            temp_min = str_2;
+            str_2 = str_2 + col;
+        }
+}
+
+int main()
+{
+    char original_str[10][20] = {0};
+    char sorted_str[10][20] = {0};
+    generate_str(*original_str,10,20);                 // 随机生成原字符串
+    printf("原字符串为：\n");
+//  print_str_1(equal_len,10);                          // 参数类型不同的print函数，效果相同
+    print_str_2(*original_str, 10, 20);
+
+    sort_str(original_str,sorted_str,10,20);            // 很难对字符串数组真正sort，所以生成一个新的数组， 把原数组字符串按从小到大写入
+
+    printf("\n排序后的字符串为：\n");
+    print_str_2(*sorted_str,10,20);
+    return 0;
+}
+
 
 // 12. 用指针数组处理上一题目，字符串不等长。
 
