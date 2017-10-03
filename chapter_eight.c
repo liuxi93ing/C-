@@ -533,6 +533,45 @@ int main()
 
 // 12. 用指针数组处理上一题目，字符串不等长。
 
+void sort_string(char *s[], int number)
+{
+    char *temp;
+    int i, j;
+    for(i=0; i<number; i++)
+    {
+        for(j=0; j<number-1-i; j++)
+        {
+            if(strcmp(s[j],s[j+1])>0)
+            {
+                temp = s[j];
+                s[j] = s[j+1];
+                s[j+1] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    char *p[10];
+    char original_str[10][100] = {0};
+    int i = 0;
+    for(i=0;i<10;i++)                           // 定义10个字符指针指向10个字符串
+        p[i] = original_str[i];
+
+    printf("输入10个字符串:\n");
+    for(i=0;i<10;i++)
+        gets(p[i]);
+
+    sort_string(p, 10);                         // 给指针排序，让第一个指向最小的....最后顺序输入指针
+
+    printf("排序后的字符串为:\n");
+    for(i=0;i<10;i++)
+        puts(p[i]);
+
+    return 0;
+}
+
 // 13. 写一个矩形法求定积分的通用函数，分别求sinx，cosx和e^x的定积分，积分区间为0到1。
 
 // 14. 将n个数按输入时顺序的逆序排列，用函数实现。
