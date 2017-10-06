@@ -604,7 +604,7 @@ int main()
     int type = 100;
     while(type!=-1)
     {
-        printf("请输入想求定积分函数的序号(输入-1退出程序)：\n（1）.sin(x)\n（2）cos(x)\n（3）e^x\n");
+        printf("请输入想求定积分函数的序号(输入-1退出程序)：\n（1）sin(x)\n（2）cos(x)\n（3）e^x\n");
         scanf("%d",&type);
         switch(type)
         {
