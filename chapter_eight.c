@@ -533,7 +533,7 @@ int main()
 
 // 12. 用指针数组处理上一题目，字符串不等长。
 
-void sort_string(char *s[], int number)
+void sort_string(char *s[], int number)                 //冒泡排序
 {
     char *temp;
     int i, j;
@@ -576,11 +576,58 @@ int main()
 
 // 14. 将n个数按输入时顺序的逆序排列，用函数实现。
 
+void reverse_array(int *a, int n)
+{
+    int *head = a;
+    int *tail = a + n - 1;
+    int temp;
+
+    while((tail-head)>=1)                       //数组数量为奇数偶数情况不同
+    {
+        temp = *head;
+        *head = *tail;
+        *tail = temp;
+
+        head++;
+        tail--;
+    }
+}
+
+int main()
+{
+    int *s = (int*)malloc(sizeof(int)*100);
+    memset(s, NULL, sizeof(int)*100);
+    int *p = s;
+
+    int n = 0;
+    printf("输入整数n:");
+    scanf("%d", &n);
+
+    printf("输入n个整数:\n");
+    int i = n;
+    while(i--)
+        scanf("%d", p++);
+
+    reverse_array(s,n);
+
+    i = 0;
+    while(i<n)
+    {
+        printf("%d  ",*(s+i));
+        i++;
+    }
+    printf("\n");
+    free(s);
+    return 0;
+}
 // 15. 有一个班4个学生，5门课程。(1)求第一门课程的平均分；(2)找出有两门以上课程不及格的学生，输出他们的学号和全部课程成绩及平均成绩；
 //     (3)找出平均成绩在90分以上或全部课程成绩在85分以上的学生。分别编写3个函数实现以上3个要求。
 
+
+
+
 // 16. 输入一个字符串，内有数字和非数字字符，例如：A123*456 17960? 302tab5876
-//     将其中连续的数字作为一个整数，一次存放在数组a中。例如123放在a[0],456放在a[1]...，统计一共有多少个整数，并输出这些整数。
+//     将其中连续的数字作为一个整数，依次存放在数组a中。例如123放在a[0],456放在a[1]...，统计一共有多少个整数，并输出这些整数。
 
 /** 17. 写一个函数，实现两个字符串比较。即自己实现strcmp函数，函数原型为 int strcmp(char *p1，char *p2)
         设p1指向字符串s1，p2指向字符串s2。要求当s1=s2时，返回值为0；若s1不等于s2，返回他们二者第1个不同字符的ASCII码差值（如“BOY”和“BAD”第2个字母不同，
