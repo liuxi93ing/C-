@@ -573,6 +573,49 @@ int main()
 }
 
 // 13. 写一个矩形法求定积分的通用函数，分别求sinx，cosx和e^x的定积分，积分区间为0到1。
+double func1(double x)
+{
+    return sin(x);
+}
+
+double func2(double x)
+{
+    return cos(x);
+}
+
+double func3(double x)
+{
+    return exp(x);
+}
+
+double integral(double (*p)(double),double lower_bound, double upper_bound)
+{
+    double result = 0, i;
+    double interval = (upper_bound-lower_bound)/10000;
+    for(i = lower_bound; i<upper_bound; i=i+interval)
+    {
+        result += p(i)*interval;
+    }
+    return result;
+}
+
+int main()
+{
+    int type = 100;
+    while(type!=-1)
+    {
+        printf("请输入想求定积分函数的序号(输入-1退出程序)：\n（1）.sin(x)\n（2）cos(x)\n（3）e^x\n");
+        scanf("%d",&type);
+        switch(type)
+        {
+            case 1: printf("结果为%lf\n\n",integral(func1,0,1.0));break;
+            case 2: printf("结果为%lf\n\n",integral(func2,0,1.0));break;
+            case 3: printf("结果为%lf\n\n",integral(func3,0,1.0));break;
+            case -1: return 0;
+            default: printf("输入错误\n\n");break;
+        }
+    }
+}
 
 // 14. 将n个数按输入时顺序的逆序排列，用函数实现。
 
