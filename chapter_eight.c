@@ -775,36 +775,44 @@ int main()
 // 16. 输入一个字符串，内有数字和非数字字符，例如：A123*456 17960? 302tab5876
 //     将其中连续的数字作为一个整数，依次存放在数组a中。例如123放在a[0],456放在a[1]...，统计一共有多少个整数，并输出这些整数。
 
+int string_to_digit(char *s)
+{
+    int i, result = 0;
+    int length = strlen(s);
+    for(i = 0; i<length; i++)
+        result += (s[length-1-i] - 48)*pow(10,i);
+    return result;
+}
+
 int main()
 {
-    char str[] = "A123*456 17960? 302tab5876";
+    char str[] = {"A123*456 17960? 302tab5876"};
     char *p, *from, *to;
     char temp[20] = {0};
     int a[10] = {0};
     int length = strlen(str), count = 0;
 
 
-    for(p = str; *p!='\0'; p++)
-    {
+    for(p = str; *p!='\0'; p++)                         // 思路为找到第一个数字，用内层循环把它及后面的数字遍历并完存在临时数组里，
+    {                                                   // 把这个数组转化成数字值，把当前指针指向本组数字末尾
         if(isdigit(*p))
         {
+            memset(temp, 0, 20);
             from = p;
             to = temp;
             while(isdigit(*from))
                 *(to++) =*(from++);
-        }
-        a[count++] = string_to_digit(temp);
-        p = from;
+            p = from;
+            a[count++] = string_to_digit(temp);         // 假如有三个数，count从0开始记，第一次调用完++变成1，第二次调用完为2，第三次为3。
+        }                                               // count 的数值是准的，不用额外加1
     }
 
-    count = count + 1;
     printf("共有%d个整数，分别为：", count);
     int i;
     for(i = 0; i<count; i++)
         printf("%d ",a[i]);
-    printf("\n")；
-
-    return 0；
+    printf("\n");
+    return 0;
 }
 
 
