@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 //本章习题要求用指针方法处理
 // 1. 输入3个整数，按由小到大的顺序输出。
@@ -665,12 +666,147 @@ int main()
 }
 // 15. 有一个班4个学生，5门课程。(1)求第一门课程的平均分；(2)找出有两门以上课程不及格的学生，输出他们的学号和全部课程成绩及平均成绩；
 //     (3)找出平均成绩在90分以上或全部课程成绩在85分以上的学生。分别编写3个函数实现以上3个要求。
+void print_array(int *p, int row, int col)
+{
+    int i, j;
+    printf("学生成绩为：\n");
+    for(i = 0; i<row; i++)
+    {
+        for(j = 0; j<col; j++)
+            printf("%d ",*(p+i*col+j));
+        printf("\n");
+    }
+}
 
+void func_1(int *p, int row, int col)
+{
+    int i, j;
+    double result = 0;
+    for(i = 0; i<row; i++)
+        result = result + *(p+i*col);
 
+    result = result/(double)row;
+    printf("第一门课的平均分为：%g\n",result);
+}
 
+void func_2(int *p, int row, int col)
+{
+    int i, j;
+    int count, fail[4] = {0};
+    for(i = 0; i<row; i++)
+    {
+        count = 0;
+        for(j=0; j<col; j++)
+            if(*(p+i*col+j)<60)
+                count++;
+        if(count>2)
+            fail[i] = 1;
+    }
+
+    for(i=0; i<row; i++)
+    {
+        if(fail[i]==1)
+        {
+            printf("%d号学生，成绩为：",i+1);
+            for(j=0; j<col; j++)
+                printf("%d ", *(p+i*col+j));
+            printf("\n");
+        }
+    }
+}
+
+void func_3(int *p, int row, int col)
+{
+    int i, j, sum;
+    int flag[4] = {1};
+
+    for(i = 0; i <row; i++)
+    {
+        sum = 0;
+        for(j = 0; j<col; j++)
+        {
+            sum += *(p+i*col+j);
+            if(*(p+i*col+j)<85)
+                flag[i] = 0;
+        }
+        if(sum>=90*col)
+            flag[i] = 1;
+    }
+
+    for(i=0; i<row; i++)
+    {
+        if(flag[i]==1)
+        {
+            printf("%d号学生，成绩为：",i+1);
+            for(j=0; j<col; j++)
+                printf("%d ", *(p+i*col+j));
+            printf("\n");
+        }
+    }
+}
+
+int main()
+{
+    int grades[4][5] = {
+    {56, 58, 70, 45, 67},
+    {85, 87, 80, 99, 94},
+    {93, 95, 96, 90, 86},
+    {76, 73, 78, 87, 82}};
+
+    int row = 4;
+    int col = 5;
+    print_array(grades, row, col);
+    int type = 0;
+    while(1)
+    {
+        printf("\n输入序号来进行操作(-1结束输入)：\n(1)求第一门课的平均分\n(2)找出两门课程不及格的学生\n(3)找出平均成绩90或全部成绩85分以上的学生\n");
+        scanf("%d",&type);
+        switch(type)
+        {
+            case 1:func_1(grades,row,col);break;
+            case 2:func_2(grades,row,col);break;
+            case 3:func_3(grades,row,col);break;
+            case -1:return 0;
+            default: printf("输入错误\n");break;
+        }
+    }
+}
 
 // 16. 输入一个字符串，内有数字和非数字字符，例如：A123*456 17960? 302tab5876
 //     将其中连续的数字作为一个整数，依次存放在数组a中。例如123放在a[0],456放在a[1]...，统计一共有多少个整数，并输出这些整数。
+
+int main()
+{
+    char str[] = "A123*456 17960? 302tab5876";
+    char *p, *from, *to;
+    char temp[20] = {0};
+    int a[10] = {0};
+    int length = strlen(str), count = 0;
+
+
+    for(p = str; *p!='\0'; p++)
+    {
+        if(isdigit(*p))
+        {
+            from = p;
+            to = temp;
+            while(isdigit(*from))
+                *(to++) =*(from++);
+        }
+        a[count++] = string_to_digit(temp);
+        p = from;
+    }
+
+    count = count + 1;
+    printf("共有%d个整数，分别为：", count);
+    int i;
+    for(i = 0; i<count; i++)
+        printf("%d ",a[i]);
+    printf("\n")；
+
+    return 0；
+}
+
 
 /** 17. 写一个函数，实现两个字符串比较。即自己实现strcmp函数，函数原型为 int strcmp(char *p1，char *p2)
         设p1指向字符串s1，p2指向字符串s2。要求当s1=s2时，返回值为0；若s1不等于s2，返回他们二者第1个不同字符的ASCII码差值（如“BOY”和“BAD”第2个字母不同，
