@@ -816,16 +816,166 @@ int main()
 }
 
 
-/** 17. 写一个函数，实现两个字符串比较。即自己实现strcmp函数，函数原型为 int strcmp(char *p1，char *p2)
+/* 17. 写一个函数，实现两个字符串比较。即自己实现strcmp函数，函数原型为 int strcmp(char *p1，char *p2)
         设p1指向字符串s1，p2指向字符串s2。要求当s1=s2时，返回值为0；若s1不等于s2，返回他们二者第1个不同字符的ASCII码差值（如“BOY”和“BAD”第2个字母不同，
         “O”与“A”之间差为 79-65=14）。如果s1>s2，这输出正值；如果s1<s2，则输出负值。
 */
 
-// 18. 编一程序，输入月份号，输出该月的英文月名。例如，输入"3"，则输出“March”，要求用指针数组处理。
+int strcmp_x(char *p1, char *p2)
+{
+    int different = 0;
+    int i = 0;
+    while(different==0)
+    {
+        different = *(p1+i)-*(p2+i);
+        i++;
+    }
+    return different;
+}
 
+int main()
+{
+    char str1[100] = {0};
+    char str2[100] = {0};
+    printf("输入第一个字符串：\n");
+    gets(str1);
+    printf("输入第二个字符串：\n");
+    gets(str2);
+    printf("两字符串比较结果为：%d\n",strcmp_x(str1,str2));
+    return 0;
+}
+
+// 18. 编一程序，输入月份号，输出该月的英文月名。例如，输入"3"，则输出“March”，要求用指针数组处理。
+int main()
+{
+    char month[12][20] = {
+    {"January"},
+    {"February"},
+    {"March"},
+    {"Apirl"},
+    {"May"},
+    {"June"},
+    {"July"},
+    {"August"},
+    {"September"},
+    {"Ocotober"},
+    {"November"},
+    {"December"}};
+    char *s[12];
+    int i, x;
+    for(i = 0; i<12; i++)
+        s[i] = month[i];
+
+    printf("输入月份:\n");
+    scanf("%d",&x);
+    printf("输出月份为: %s\n", s[x-1]);
+    return 0;
+}
 // 19. (1) 编写一个函数 new，对n个字符开辟连续的存储空间，此函数应返回一个指针(地址)，指向字符串开始的空间。new(n)表示分配n个字节的内存空间。
 //     (2) 写一个函数free，将前面new函数占用的空间释放。free(p)表示将p(地址)指向的单元以后的内存释放。
+/**此题答案来自官方参考答案*/
+#define NEWSIZE 1000                    //指定开辟存区的最大容量
+char newbuf[NEWSIZE];                   //定义字符数组newbuf
+char *newp=newbuf;                      //定义指针变量newp，指向可存区的始端
+char *new(int n)                        //定义开辟存区的函数new,开辟存储区后返回指针
+{
+    if (newp+n<=newbuf+NEWSIZE)         // 开辟区未超过newbuf数组的大小
+    {
+        newp+=n;                          // newp指向存储区的末尾
+        return(newp-n);                  // 返回一个指针,它指向存区的开始位置
+    }
+    else
+        return(NULL);                    // 当存区不够分配时,返回一个空指针
+}
 
+
+#define NEWSIZE 1000
+char newbuf[NEWSIZE];
+char *newp=newbuf;
+void free(char *p)                             //释放存区函数
+{
+    if(p>=newbuf && p< newbuf + NEWSIZE)
+        newp=p;
+}
 // 20. 用指向指针的指针的方法对5个字符串排序并输出。
 
+/** 几乎等同于12题，只不过使用 **s 作为函数参数，而不是*s[], 两者实际等同*/
+
+void sort_string(char **s, int number)                 //冒泡排序
+{
+    char *temp;
+    int i, j;
+    for(i=0; i<number; i++)
+    {
+        for(j=0; j<number-1-i; j++)
+        {
+            if(strcmp(s[j],s[j+1])>0)
+            {
+                temp = s[j];                            // s[j] 可以写成 *（s+j）
+                s[j] = s[j+1];
+                s[j+1] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    char *p[5], **p1;
+    char original_str[5][100] = {0};
+    int i = 0;
+    for(i=0;i<5;i++)                           // 定义10个字符指针指向10个字符串
+        p[i] = original_str[i];
+
+    printf("输入10个字符串:\n");
+    for(i=0;i<5;i++)
+        gets(p[i]);
+
+    p1 = p;
+    sort_string(p1, 5);                         // 传入p是一样的
+                                                // 给指针排序，让第一个指向最小的....最后顺序输入指针
+    printf("排序后的字符串为:\n");
+    for(i=0;i<5;i++)
+        puts(p[i]);
+
+    return 0;
+}
 // 21. 用指向指针的指针的方法对n个整数排序并输出。要求将排序单独写成一个函数。n个整数在主函数中输入，最后在主函数中输出。
+#define N 10
+
+void int_sort(int **p)
+{
+    int *temp = NULL;
+    int i = 0, j = 0;
+    for(i=0; i<N-1; i++)
+    {
+        for(j=i; j<N-i-1; j++)
+        {
+            if(*(p+j)>*(p+j+1))
+            {
+                temp = *(p+j);
+                *(p+j) = *(p+j+1);
+                *(p+j+1) = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int a[N] = {0};
+    int *p[N] = {NULL}, **x =NULL;
+    printf("输入n个整数(n为10)：\n");
+    int i = 0;
+    for(i = 0; i<N; i++)
+        p[i] = &a[i];
+    for(i = 0; i<N; i++)
+        scanf("%d",p[i]);
+
+    x = p;
+    int_sort(x);
+    printf("排序后的数组为：\n");           //把指针指向排了序，原数组没变。输出时按指针输出
+    for(i = 0; i<N; i++)
+        printf("%d ", *p[i]);
+    return 0;
+}
