@@ -207,10 +207,10 @@ int functin(int *p, int number)
             continue;   //!!如果一次循环向后推移多个会出错!!
         }
 
-        if(i>=1&&i<=3)
+        if(i>=1&&i<=3)  // 每个人报数，报1或2或3
         {
             if(i==3)
-                count--;
+                count--; // 每有一个人报3，当前人数减1
              *p++ = i++;
         }
         if(i==4)
@@ -221,11 +221,11 @@ int functin(int *p, int number)
     }
     for(p = head; p <= tail; p++)
     {
-        if(*p!=3)
+        if(*p!=3)           // 最后只剩一个人没报过3
             break;
     }
 
-    return p-head+1;
+    return p-head+1;        // 返回他是第几号
 }
 
 int main()
@@ -255,6 +255,7 @@ int main()
     scanf("%s",p);
     printf("字符串长度为：%d",string_len(p));
     free(p);
+    p = NULL;
     return 0;
 }
 
@@ -516,19 +517,20 @@ void sort_str(char *str_1, char *str_2, int row, int col)
 
 int main()
 {
-    char original_str[10][20] = {0};
-    char sorted_str[10][20] = {0};
-    generate_str(*original_str,10,20);                 // 随机生成原字符串
+    char original_str[10][20] = {{0}};                  // 二维数组初始化只用一层大括号会有warning
+    char sorted_str[10][20] = {{0}};
+    generate_str(*original_str,10,20);                 // 随机生成原字符串 也可以写成generate_str(original_str,10,20); 会有warning，类型不匹配
     printf("原字符串为：\n");
-//  print_str_1(equal_len,10);                          // 参数类型不同的print函数，效果相同
+//  print_str_1(original_str, 10);                    // 参数类型不同的print函数，效果相同 建议使用下一个
     print_str_2(*original_str, 10, 20);
 
-    sort_str(original_str,sorted_str,10,20);            // 很难对字符串数组真正sort，所以生成一个新的数组， 把原数组字符串按从小到大写入
+    sort_str(*original_str,*sorted_str,10,20);            // 很难对字符串数组真正sort，所以生成一个新的数组， 把原数组字符串按从小到大写入
 
     printf("\n排序后的字符串为：\n");
     print_str_2(*sorted_str,10,20);
     return 0;
 }
+
 
 
 // 12. 用指针数组处理上一题目，字符串不等长。
@@ -537,7 +539,7 @@ void sort_string(char *s[], int number)                 //冒泡排序
 {
     char *temp;
     int i, j;
-    for(i=0; i<number; i++)
+    for(i=0; i<number-1; i++)
     {
         for(j=0; j<number-1-i; j++)
         {

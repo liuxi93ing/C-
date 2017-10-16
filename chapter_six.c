@@ -477,6 +477,7 @@ char* concatenate(char A[], char B[])
     int i;
     for(i = 0; i<len_B; i++)
         A[len_A+i] = B[i];
+    A[len_A+i] = '\0';
 
     return A;
 }
@@ -517,7 +518,7 @@ int compare(char A[], char B[])
 
 int main()
 {
-        char str1[200];
+    char str1[200];
     char str2[200];
     printf("请输入第一个字符串：\n");
     gets(str1);
@@ -538,7 +539,8 @@ char* copy(char A[], char B[])
     int i = 0;
     while(B[i]!='\0')
     {
-        A[i] = B[i++];
+        A[i] = B[i];
+        i++;
     }
     A[i] = B[i];
     return A;

@@ -179,6 +179,7 @@ char* concatenate(char A[], char B[])
     int i;
     for(i = 0; i<len_B; i++)
         A[len_A+i] = B[i];
+    A[len_A+i] = '\0';
 
     return A;
 }
@@ -290,9 +291,9 @@ int main()
 //默认输入的字符串为符合英文书写规范的句子。
 void longest_word(char sentence[])
 {
-    int i, j, length = 0;
-    char temp[20] = {0};
-    char word[20] = {0};
+    int i, j, length = 0;                           // length 来记录最长单词长度
+    char temp[20] = {0};                            // temp[20] 来记录当前单词
+    char word[20] = {0};                            // word[20] 来记录最长单词
     for(i = 0, j = 0; i < strlen(sentence)+1; i++)
     {
         if(sentence[i]>='a'&&sentence[i]<='z'||sentence[i]>='A'&&sentence[i]<='Z'||sentence[i]=='-')
@@ -300,8 +301,8 @@ void longest_word(char sentence[])
             temp[j] = sentence[i];
             j++;
         }
-
-        else
+                                                    // 把当前单词写入temp中，用j来记录该单词长度
+        else                                        // 当一个单词结束时，如果j比length大， temp写入word，j写入length。j清0
         {
             if(j> length)
             {
@@ -331,9 +332,9 @@ int main()
 int bubble(int a[], int count)
 {
     int i, j, temp;
-    for(i = 0; i < count; i++)
+    for(i = 0; i < count-1; i++)
     {
-        for(j = 0; j < count - i; j ++)
+        for(j = 0; j < count-1-i; j ++)
         {
             if(a[j]>a[j+1])
             {
@@ -440,7 +441,7 @@ void stu_average(int grades[][5])
         {
             sum = sum + grades[i][j];
         }
-        printf("%-4g \n",average[i] = sum/5.0);  //实型除以浮点型自动变成浮点型
+        printf("%-4g \n",average[i] = sum/5.0);  //整型除以浮点型自动变成浮点型
     }
 }
 
@@ -590,12 +591,13 @@ int main()
 }
 
 // 17. 用递归法将一个整数n转化成字符串。例如，输入483，应输出字符串“483”。n的位数不确定，可以是任意位数的整数。
-static char final_str[100];
 
-void convert(long long int x)
+
+char * convert(long long int x)
 {
-    static int i = 0;
-    long long int temp;
+    static int i = 0;                       // 局部静态变量，每次调用完函数后不释放，下次依然保留上一次的值
+    static char final_str[100] = {0};
+    int temp;                               // temp记录当前个位数
 
     temp = x%10;                            //把个位数记下，除10抹掉个位，迭代...直到仅剩首位，把该位写入数组第一个元素，
 //    printf("number is %d\n",temp);
@@ -607,16 +609,15 @@ void convert(long long int x)
     final_str[i] = temp+48;
     i++;
 //    printf("f[i] is %c, i is %d\n", final_str[i], i);
+    return final_str;
 }
 
 int main()
 {
     long long int number;
-    memset(final_str,0,100);
     printf("输入一个整数:\n");
     scanf("%lld",&number);
-    convert(number);
-    printf("字符串为:%s\n",final_str);
+    printf("字符串为:%s\n", convert(number));
     return 0;
 }
 
