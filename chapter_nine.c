@@ -144,13 +144,13 @@ struct node{
     struct node *next;
 };
 
-void generate_chain(struct node *head, int number)
+int generate_chain(struct node *head, int number)
 {
     struct node *cursor = head;                 // cursor指向当前节点
     struct node *build = NULL;                  // build来建立新节点
     int i;
     head->num = 1;
-    head->next = NULL;
+    head->next = NULL;                          // 给头结点赋值
     for(i = 1; i<number; i++)
     {
         if(NULL==(build = (struct node *)malloc(SIZE)))
@@ -164,6 +164,7 @@ void generate_chain(struct node *head, int number)
         cursor->next = NULL;
     }
     cursor->next = head;                        // 本体需收尾相连形成环
+    return 0;
 }
 
 struct node *number_off(struct node *head)
@@ -178,7 +179,7 @@ struct node *number_off(struct node *head)
         if(count==3)                           // 如果本机循环报3， 则删除该结点，cursor退回上一个结点，count归0。
         {
             previous->next = cursor->next;
-            cursor->next = NULL;
+            free(cursor);
             cursor = previous;
             count = 0;
         }
@@ -210,8 +211,155 @@ int main()
 // 9. 综合本章例9.9（建立链表的函数create）、例9.10（输出链表的函数print）和本章习题第7题、本章习题第8题，再编写一个主函数，先后调用这些函数。
 //    用以上5个函数组成一个程序，实现链表的建立、输出、删除和插入，在主函数中指定需要删除和插入的结点的数据。
 
+#define SIZE sizeof(struct Student)
+struct Student{
+    int number;
+    int score;
+    struct Student *next;
+};
+
+struct Student *create_s()
+{
+     struct Student *head;
+     struct Student *cursor, *build;
+     int n = 0;
+
+     while(++n)                                                      // 先++n使n变为1， 再判断while循环条件
+     {
+        if(NULL == (build = (struct Student *)malloc(SIZE)))         // 判断是否分配内存成功
+        {
+            printf("memory allocation fail\n");
+            return NULL;
+        }
+        if(n==1)                                                    // 如果是第一个结点，head指向它，如果不是，前一个结点连入它
+            head = build;
+        else
+            cursor->next = build;
+
+        cursor = build;                                             // 当前光标指针指向新节点
+
+        printf("输入学生的学号(输入0来结束输入):");                 // 为新结点赋值
+        scanf("%d",&cursor->number);
+        printf("输入学生的成绩:");
+        scanf("%d",&cursor->score);
+        cursor->next = NULL;                                        // 新结点指向空
+
+        if(cursor->number==0)                                       // 判断退出条件， 也就是说链表最后一个结点存储的是空数据，属于收尾结点
+            break;
+     }
+     return head;
+}
+
+void print_s(struct Student *head)
+{
+    struct Student *cursor = head;
+    while(cursor->next!=NULL)
+    {
+        printf("学号: %-6d 成绩: %-4d\n", cursor->number, cursor->score);
+        cursor = cursor->next;
+    }
+}
+
+struct Student *insert_s(struct Student *head, int n_number, int n_score)      // 假设学号是有序排列的
+{
+     struct Student *prev = head;
+     struct Student *cursor = head;
+     struct Student *build = NULL;
+     struct Student *new_head = head;
+
+     while(cursor->number<=n_number&&cursor->number!=0)             // 遍历，使cursor指向比新学号高的结点，prev指向cursor的前一结点
+     {
+             prev = cursor;
+             cursor = cursor->next;
+     }
+
+     if(NULL == (build = (struct Student *)malloc(SIZE)))           // 创建新结点，插入到cursor之间
+     {
+         printf("memory allocation fail\n");
+         return NULL;
+     }
+     build->number = n_number;
+     build->score = n_score;
+     build->next = cursor;
+
+     if(head->number<=n_number)                                     // 如果在head后面插入，prev指向新节点
+        prev->next = build;
+     else                                                           // 如果插入在head之前， 新节点成为head；
+        new_head = build;
+
+    return new_head;
+}
+
+struct Student *delete_s(struct Student *head, int d_number)
+{
+     struct Student *prev = head;
+     struct Student *cursor = head;
+     struct Student *new_head = head;
+
+     if(head->number==d_number)                                     // 单独处理删除头结点的情况
+     {
+         new_head = head->next;
+         free(cursor);
+         return new_head;
+     }
+
+     while(cursor->number!=d_number&&cursor->number!=0)             // 遍历寻找要删除的结点
+     {
+         prev = cursor;
+         cursor = cursor->next;
+     }
+     if(cursor->number==0)                                          // 未找到情况
+     {
+         printf("未找到要删除的学号\n");
+         return new_head;
+     }
+
+     prev->next = cursor->next;
+     free(cursor);
+
+     return new_head;
+}
+
+int main()
+{
+    struct Student *head= NULL;
+    head = create_s();
+
+    int menu = 0;
+    int n_number, n_score;
+    int d_number;
+    while(1)
+    {
+        printf("\n输入序号进行的操作:\n(1).打印当前记录。\n(2).插入新记录。\n(3).删除已有记录。\n(4).退出\n");
+        scanf("%d",&menu);
+        switch(menu)
+        {
+            case 1: print_s(head);break;
+            case 2:
+                {
+                    printf("请输入新记录的学号:");                         // 插入和删除属于写操作，可能会影响head，所以需要返回新head
+                    scanf("%d",&n_number);
+                    printf("请输入新记录中的成绩:");
+                    scanf("%d",&n_score);
+                    head = insert_s(head, n_number, n_score);
+                    break;
+                }
+            case 3:
+                {
+                    printf("请输入要删除的记录的学号:");
+                    scanf("%d",&d_number);
+                    head = delete_s(head,d_number);
+                    break;
+                }
+            case 4: return 0;
+            default: printf("输入错误\n");
+        }
+    }
+}
 
 // 10. 已有a，b两个链表，每个链表中的结点包括学号、成绩。要求把两个链表合并，按学号升序排列。
+
+/** 由题目得知a，b均为静态链表，修改结点中数据比移动结点位置更容易*/
 
 // 11. 有两个链表a和b，设结点中包含学号、姓名。从a链表中删出于b链表中有相同学号的那些结点。
 
