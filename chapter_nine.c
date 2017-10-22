@@ -260,7 +260,7 @@ void print_s(struct Student *head)
     }
 }
 
-struct Student *insert_s(struct Student *head, int n_number, int n_score)      // 假设学号是有序排列的
+struct Student *insert_s(struct Student *head, int n_number, int n_score)      // 假设学号是有序排列的,且学号不重复
 {
      struct Student *prev = head;
      struct Student *cursor = head;
@@ -290,7 +290,7 @@ struct Student *insert_s(struct Student *head, int n_number, int n_score)      /
     return new_head;
 }
 
-struct Student *delete_s(struct Student *head, int d_number)
+struct Student *delete_s(struct Student *head, int d_number)        // 假定学号不重复，一次最多删除一个结点
 {
      struct Student *prev = head;
      struct Student *cursor = head;
@@ -456,5 +456,156 @@ int main()
 // 11. 有两个链表a和b，设结点中包含学号、姓名。从a链表中删出与b链表中有相同学号的那些结点。
 /**默认为静态链表，思路是外层循环遍历b表每个结点，内层循环遍历a表每个结点，有相同删除a中结点*/
 
+struct Student{
+    int number;
+    char *name;
+    struct Student *next;
+};
+
+void print_s(struct Student *head)
+{
+    struct Student *cursor = head;
+    while(cursor!=NULL)
+    {
+        printf("学号: %-6d 姓名: %-10s\n", cursor->number, cursor->name);
+        cursor = cursor->next;
+    }
+}
+
+struct Student *delete_s(struct Student *head, struct Student *target)
+{
+    struct Student *cursor = head;
+    while(cursor!=NULL)
+    {
+        if(head==target)                                      // 如果删除的是头结点
+        {
+            head = head->next;
+ //         target->next = NULL;                              // 若不注释这句会导致表a的内存循环结束，因为中断了cursor_1继续向后遍历。
+            break;                                            // 后果是若a表中有两个同样条目需删除，只能删除第一个
+        }
+        if(cursor->next==target)                              //  删除的不是头结点
+        {
+            cursor->next = target->next;
+ //         target->next = NULL;
+            break;
+        }
+        cursor = cursor->next;
+    }
+    return head;
+}
+
+struct Student *filter_s(struct Student *head_1,struct Student *head_2)
+{
+    struct Student *cursor_1, *cursor_2;
+    for(cursor_2 = head_2; cursor_2!=NULL; cursor_2 = cursor_2->next)
+    {
+        for(cursor_1 = head_1; cursor_1!=NULL; cursor_1 = cursor_1->next)
+        {
+            if(cursor_1->number==cursor_2->number)
+                head_1 = delete_s(head_1,cursor_1);
+        }
+    }
+    return head_1;
+}
+
+
+int main()
+{
+    struct Student *head_1, *head_2;
+    struct Student a,b,c,d,e,f,g,h,i,j;
+
+    head_1 = &a;
+    a.number = 1014; a.name = "Alice"; a.next = &b;
+    b.number = 1007; b.name = "Bob"; b.next = &c;
+    c.number = 1028; c.name = "Charlie"; c.next = &d;
+    d.number = 1013; d.name = "David"; d.next = &e;
+    e.number = 1011; e.name = "Edward"; e.next = &f;
+    f.number = 1013; f.name = "David"; f.next = NULL;
+    head_2 = &g;
+    g.number = 1013; g.name = "David"; g.next = &h;
+    h.number = 1014; h.name = "Alice"; h.next = &i;
+    i.number = 1015; i.name = "Frank"; i.next = &j;
+    j.number = 1016; j.name = "No one"; j.next = NULL;
+
+    printf("链表a为:\n");
+    print_s(head_1);
+    printf("链表b为:\n");
+    print_s(head_2);
+    head_1 = filter_s(head_1,head_2);
+    printf("删除后的链表a为:\n");
+    print_s(head_1);
+    return 0;
+}
 
 // 12. 建立一个链表，每个结点包含学号、姓名、性别、年龄。输入一个年龄，如果链表中的结点所包含的年龄等于此年龄，则将此结点删去。
+/**复用第11题中的删除代码，此题与第7题不同之处在于年龄可以重复，一次需删除多个结点，当做静态链表处理*/
+
+struct Student{
+    int number;
+    char *name;
+    char *gender;
+    int age;
+    struct Student *next;
+};
+
+void print_s(struct Student *head)
+{
+    struct Student *cursor = head;
+    while(cursor!=NULL)
+    {
+        printf("学号: %-6d 姓名: %-10s 性别: %-10s 年龄: %-4d\n", cursor->number, cursor->name, cursor->gender, cursor->age);
+        cursor = cursor->next;
+    }
+}
+
+struct Student *delete_s(struct Student *head, struct Student *target)
+{
+    struct Student *cursor = head;
+    while(cursor!=NULL)
+    {
+        if(head==target)                                      // 如果删除的是头结点
+        {
+            head = head->next;                                // 不要把以删除的结点指为空，外层函数中cursor还指向该结点，需要该链继续遍历
+            break;
+        }
+        if(cursor->next==target)                              //  删除的不是头结点
+        {
+            cursor->next = target->next;
+            break;
+        }
+        cursor = cursor->next;
+    }
+    return head;
+}
+
+struct Student *filter_age(struct Student *head,int age)
+{
+    struct Student *cursor;
+    for(cursor = head; cursor!=NULL; cursor = cursor->next)
+        if(cursor->age==age)
+            head = delete_s(head,cursor);
+
+    return head;
+}
+
+int main()
+{
+    struct Student *head;
+    struct Student a,b,c,d;
+    int age = 0;
+    head = &a;
+    a.number = 1001; a.name = "Alice"; a.gender = "female"; a.age = 23; a.next = &b;
+    b.number = 1002; b.name = "Bob"; b.gender = "male"; b.age = 25; b.next = &c;
+    c.number = 1003; c.name = "Charlie"; c.gender = "male"; c.age = 23; c.next = &d;
+    d.number = 1004; d.name = "David"; d.gender = "male"; d.age = 21; d.next = NULL;
+
+    printf("原表为:\n");
+    print_s(head);
+    printf("输入想删除的年龄:\n");
+    scanf("%d",&age);
+    head = filter_age(head,age);
+    printf("删除后的链表为:\n");
+    print_s(head);
+
+    return 0;
+}
