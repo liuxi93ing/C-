@@ -269,10 +269,87 @@ int main()
 // 9. 有一磁盘文件“employee”，内存放职工的数据。每个职工的数据包括职工姓名、职位、性别、年龄、住址、工资、健康状况、文化程度。
 //    今要求将职工名、工资的信息单独抽出来新建另一个简明的职工工资文件。
 /**先创建磁盘文件，为简单起见，使用fwrite写入二进制文件*/
+struct employee{
+    char name[20];
+    char position[10];
+    char gender[6];
+    int age;
+    char address[50];
+    int salary;
+    char health[10];
+    char education[10];
+}em[5];
+
+int main()
+{
+    FILE * fp;
+    if(NULL==(fp=fopen("employee.dat","wb")))
+    {
+        printf("open file employee error");
+        exit(0);
+    }
+
+    em[0].age = 25; em[0].salary = 5000; strcyp(em[0].name,"Nedd Stark");strcyp(em[0].position,"lord");strcyp(em[0].gender ,"male");
+    strcyp(em[0].address ,"Winter Fell");strcyp(em[0].health ,"dead");strcyp(em[0].education ,"educated");
+    em[1].age = 25; em[1].salary = 5000; strcyp(em[1].name,"Tyrion Lannister");strcyp(em[1].position,"hand");strcyp(em[1].gender ,"male");
+    strcyp(em[1].address ,"Dragon Stone");strcyp(em[1].health ,"heathy");strcyp(em[1].education ,"educated");
+    em[2].age = 25; em[1].salary = 5000; strcyp(em[2].name,"Moutain");strcyp(em[2].position,"guard");strcyp(em[2].gender ,"male");
+    strcyp(em[2].address ,"Red Keep");strcyp(em[2].health ,"undead");strcyp(em[2].education ,"unkown");
+    em[3].age = 25; em[1].salary = 5000; strcyp(em[3].name,"John Snow");strcyp(em[3].position,"King");strcyp(em[3].gender ,"male");
+    strcyp(em[3].address ,"Black castle");strcyp(em[3].health ,"revived");strcyp(em[3].education ,"educated");
+    em[4].age = 25; em[1].salary = 5000; strcyp(em[4].name,"Mother of Dragon");strcyp(em[4].position,"queen");strcyp(em[4].gender ,"female");
+    strcyp(em[4].address ,"Dragon Stone");strcyp(em[4].health ,"unbrunt");strcyp(em[4].education ,"educated");
+
+    int i;
+    for(i=0; i<5; i++)
+        fwrite(&em[i],sizeof(struct employee), 1, fp);
+    fclose(fp);
+
+
+}
+
+
+
 // 10. 从第9题的"职工工资文件"中删去一个职工的数据，再存回原文件。
 
 // 11. 从键盘输入若干行字符串(每行长度不等)，输入后把它们存储到一磁盘文件中。再从该文件中读入这些数据，将其中小写字母转换成大写字母后在显示屏上输出。
 int main()
 {
+    FILE *fp;
+    if(NULL==(fp=fopen("strings.txt","w")))
+    {
+        printf("open file strings.txt error");
+        exit(0);
+    }
 
+    char temp[50] = {0};
+    char c;
+    int t;
+    printf("共输入多少行字符串?");
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%s",temp);
+        fprintf(fp,"%s",temp);
+    }
+    fclose(fp);
+
+    FILE *fp2;
+    if(NULL==(fp2=fopen("strings.txt","r")))
+    {
+        printf("open file strings.txt error");
+        exit(0);
+    }
+
+    while(1)
+    {
+        c = fgetc(fp2);
+        if(c==EOF)
+            break;
+        if(c>='a'&&c<='z')
+            c = c -32;
+        putchar(c);
+    }
+    fclose(fp);
+    return 0;
 }
