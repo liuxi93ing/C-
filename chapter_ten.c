@@ -91,6 +91,11 @@ int main()
     int length = strlen(temp1);
     quick_sort(temp1,0,length-1);           // 快速排序的后两个参数表示第一个元素和最后一元素的下标，所以传入0和length-1
     printf("%s,%d\n",temp1,length);
+
+    fputs(temp1,pc);                        // 整个字符串写入C文件
+    fclose(pa);
+    fclose(pb);
+    fclose(pc);
     return 0;
 }
 
@@ -134,23 +139,140 @@ int main()
     i = 0;
     for(i=0;i<5;i++)
     {
+/*
         fprintf(stud,"number: %d\n",stu[i].number);
         fprintf(stud,"name: %s\n",stu[i].name);
         fprintf(stud,"scores: %lf\t%lf\t%lf\n",stu[i].score[0],stu[i].score[1],stu[i].score[2]);
         fprintf(stud,"average: %lf\n\n",stu[i].average);
+*/
+        fwrite(&stu[i],sizeof(struct Student),1,stud);      // 由于是成块的数据，有fwrite 读入，以二进制存储
     }
 
+    fclose(stud);
     return 0;
 }
 // 6. 将第5题“stud”文件中的学生数据，按平均分进行排序处理，将已排序的学生数据存入一个新文件"stud_sort"中。
+struct Student
+{
+    int number;
+    char name[20];
+    double score[3];
+    double average;
+};
+
+int main()
+{
+    struct Student stu[5];
+    struct Student temp;
+    FILE *stud;
+    if(NULL==(stud = fopen("stud.dat","rb")))       // 从stud.dat 读入结构体数据
+    {
+        printf("open file stud.dat error");
+        exit(0);
+    }
+    int i = 0,  j = 0;
+    for(i = 0;i<5; i++)
+    {
+        fread(&stu[i],sizeof(struct Student),1,stud);
+/*
+        printf("%d\n",stu[i].number);
+        printf("%s\n",stu[i].name);
+        printf("%lf,%lf,%lf\n",stu[i].score[0],stu[i].score[1],stu[i].score[2]);
+        printf("%lf\n",stu[i].average);
+*/
+    }
+
+    for(i=0; i<4; i++)                              // 冒泡排序， 可以以结构体为单位传值
+    {
+        for(j= 0; j<4-i; j++)
+            if(stu[j].average>stu[j+1].average)
+            {
+                temp = stu[j];
+                stu[j] = stu[j+1];
+                stu[j] = temp;
+            }
+    }
+
+    FILE *stud_sort;
+    if(NULL==(stud_sort = fopen("stud_sort.dat","wb")))       // 写入新文件 stud_sort
+    {
+        printf("open file stud.dat error");
+        exit(0);
+    }
+    for(i=0; i<5; i++)
+        fwrite(&stu[i],sizeof(struct Student), 1, stud_sort);
+
+    fclose(stud);
+    fclose(stud_sort);
+    return 0;
+}
 
 // 7. 将第6题已排序的学生成绩文件进行插入处理。插入一个学生的3门课程成绩，程序先计算新插入学生的平均成绩，然后将它按成绩高低顺序插入，插入后建立一个新文件。
-
 // 8. 将第7题结果仍存入原有的“stu_sort”文件而不另建立新文件。
+struct Student{
+    int number;
+    char name[20];
+    double score[3];
+    double average;
+};
+
+int main()
+{
+    FILE *stud_sort;
+    FILE *stud_new;
+    if(NULL==(stud_sort=fopen("stud_sort.dat","rb")))
+    {
+        printf("open file stud_sort.dat error");
+        exit(0);
+    }
+    if(NULL==(stud_sort=fopen("stud_new.dat","wb")))
+    {
+        printf("open file stud_new.dat error");
+        exit(0);
+    }
+
+    struct Stu[6];                                          // 原纪录中包含5个数据，把新增数据放在结构体数组末尾
+    int i = 0
+    for(i=0; i<5; i++)
+        fread(&stu[i],sizeof(struct Student),1, stud_sort);
+
+    printf("输入新增学生的学号:\n");
+    scanf("%d",&stu[5].number);
+    printf("输入新增学生的姓名:\n");
+    scanf("%s",stu[5].name);
+    printf("输入新增学生的分数:\n");
+    scanf("%lf%lf%lf",&stu[5].score[0],&stu[5].score[2],&stu[5].score[2]);
+
+    stu[5].average = (stu[5].score[0]+stu[5].score[1]+stu[5].score[2])/3;
+
+    for(i=5;i>0;i--)                                        // 把新数据插入到正确的位置
+    {
+        if(stu[i].average<stu[i-1].average)
+        {
+            temp = stu[i];
+            stu[i] = stu[i-1];
+            stu[i-1] = temp;
+        }
+    }
+
+    for(i=0;i<6;i++)
+        fwrite(&stu[i],sizeof(struct Student),1,stud_new);   // 若要存回stud_sort, 打开stud_sort 时应为 rb+, 此行stud_new 改为stud_sort
+
+    fclose(stud_sort);
+    fclose(stud_new);
+    return 0;
+}
+
+
+
 
 // 9. 有一磁盘文件“employee”，内存放职工的数据。每个职工的数据包括职工姓名、职位、性别、年龄、住址、工资、健康状况、文化程度。
 //    今要求将职工名、工资的信息单独抽出来新建另一个简明的职工工资文件。
-
+/**先创建磁盘文件，为简单起见，使用fwrite写入二进制文件*/
 // 10. 从第9题的"职工工资文件"中删去一个职工的数据，再存回原文件。
 
 // 11. 从键盘输入若干行字符串(每行长度不等)，输入后把它们存储到一磁盘文件中。再从该文件中读入这些数据，将其中小写字母转换成大写字母后在显示屏上输出。
+int main()
+{
+
+}
